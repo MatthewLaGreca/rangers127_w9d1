@@ -12,6 +12,7 @@ export interface ShopState {
     price: string,
     prod_id: string,
     quantity: number
+    order_id?: string
 }
 
 interface UseGetShopData {
@@ -33,4 +34,25 @@ export const useGetShop = ():UseGetShopData => {
     }, [])
 
     return {shopData, getData: handleDataFetch}
+}
+
+interface UseGetOrderData {
+    orderData: ShopState[]
+    getData: () => void
+}
+
+export const useGetOrder = ():UseGetOrderData => {
+    const [orderData, setData] = useState<ShopState[]>([])
+
+    async function handleDataFetch(){
+        const result = await serverCalls.getOrder()
+        console.log(result)
+        setData(result)
+    }
+
+    useEffect(() => {
+        handleDataFetch()
+    }, [])
+
+    return {orderData, getData: handleDataFetch}
 }

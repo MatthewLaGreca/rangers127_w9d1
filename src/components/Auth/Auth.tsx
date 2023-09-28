@@ -43,7 +43,7 @@ interface SubmitProps {
     password: string
 }
 
-type MessageType = 'error' | 'warning' | 'info' | 'success'
+export type MessageType = 'error' | 'warning' | 'info' | 'success'
 
 const authStyles = {
 

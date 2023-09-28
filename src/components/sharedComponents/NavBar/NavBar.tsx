@@ -94,7 +94,7 @@ const navStyles = {
 export const NavBar = () => {
     const navigate = useNavigate()
     const [open, setOpen] = useState(false)
-    const myAuth = localStorage.getItem('auith')
+    const myAuth = localStorage.getItem('auth')
     const auth = getAuth()
     
 

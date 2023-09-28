@@ -18,7 +18,14 @@ I'm not exactly sure why this is happening if I was grabbing directly
 from my requirements.  Do I just need to change the dnspython requirement
 in requirements.txt to be something that is available to render?
 
+Remember to specify python version in environment variables when
+hosting; not always going to figure out all of the dependencies 
+
 Sign In Button doesn't ever change text, and the hidden routes based on
 if the user is authenticated only seems to work 25% of the time, IE:
 the user will not be authenticated as shown by console logging it, but it
 will still take to the shop instead of auth 
+
+Might want to incorporate a landing page API call, so that it sends 
+a GET request hopefully to Render to get it running before we actually 
+need anything
