@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as _React from 'react'
 import { useState, useEffect } from 'react'
 
 //internal imports
@@ -20,10 +20,10 @@ interface UseGetShopData {
     getData: () => void
 }
 
-export const useGetShop = ():UseGetShopData => {
+export const useGetShop = (): UseGetShopData => {
     const [shopData, setData] = useState<ShopState[]>([])
 
-    async function handleDataFetch(){
+    async function handleDataFetch() {
         const result = await serverCalls.getShop()
         console.log(result)
         setData(result)
@@ -33,7 +33,7 @@ export const useGetShop = ():UseGetShopData => {
         handleDataFetch()
     }, [])
 
-    return {shopData, getData: handleDataFetch}
+    return { shopData, getData: handleDataFetch }
 }
 
 interface UseGetOrderData {
@@ -41,10 +41,10 @@ interface UseGetOrderData {
     getData: () => void
 }
 
-export const useGetOrder = ():UseGetOrderData => {
+export const useGetOrder = (): UseGetOrderData => {
     const [orderData, setData] = useState<ShopState[]>([])
 
-    async function handleDataFetch(){
+    async function handleDataFetch() {
         const result = await serverCalls.getOrder()
         console.log(result)
         setData(result)
@@ -54,5 +54,5 @@ export const useGetOrder = ():UseGetOrderData => {
         handleDataFetch()
     }, [])
 
-    return {orderData, getData: handleDataFetch}
+    return { orderData, getData: handleDataFetch }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import _React, { useState } from 'react'
 import {
     Button,
     Drawer,
@@ -19,7 +19,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from 'react-router-dom';
-import { signOut, getAuth} from 'firebase/auth'
+import { signOut, getAuth } from 'firebase/auth'
 
 
 //internal imports
@@ -35,8 +35,8 @@ const navStyles = {
         })
     },
     appBarShift: {
-        width : `calc(100% - ${drawerWidth}px)`,
-        marginLeft : drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.easeOut, //number
             duration: theme.transitions.duration.enteringScreen //number
@@ -45,7 +45,7 @@ const navStyles = {
     menuButton: {
         marginRight: theme.spacing(2) //default is 8px, so 2x8 = 16px
     },
-    hide : {
+    hide: {
         display: 'none'
     },
     drawer: {
@@ -55,11 +55,11 @@ const navStyles = {
     drawerPaper: {
         width: drawerWidth
     },
-    drawerHeader :{
+    drawerHeader: {
         display: 'flex',
         width: drawerWidth,
         alignItems: 'center',
-        padding: theme.spacing(0,1),
+        padding: theme.spacing(0, 1),
         ...theme.mixins.toolbar, //spread operator is taking the rest of the properties from theme.mixins.toolbar
         justifyContent: 'flex-end'
     },
@@ -70,24 +70,24 @@ const navStyles = {
         }),
         marginLeft: 0
     },
-    contentShift : {
+    contentShift: {
         transition: theme.transitions.create('margin', {  //shifting out content
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen
         }),
         marginLeft: 0
     },
-    toolbar : {
-        display:'flex'
+    toolbar: {
+        display: 'flex'
     },
-    toolbarButton : {
+    toolbarButton: {
         marginLeft: 'auto',
         backgroundColor: theme.palette.primary.contrastText
     },
-    signInStack : {
+    signInStack: {
         position: 'absolute',
         top: '20%',
-        right:'50px'
+        right: '50px'
     }
 }
 
@@ -96,7 +96,7 @@ export const NavBar = () => {
     const [open, setOpen] = useState(false)
     const myAuth = localStorage.getItem('auth')
     const auth = getAuth()
-    
+
 
     const handleDrawerOpen = () => {
         setOpen(true)
@@ -109,18 +109,18 @@ export const NavBar = () => {
     const navLinks = [
         {
             text: 'Home',
-            icon: <HomeIcon/>,
-            onClick: () => {navigate('/')}
+            icon: <HomeIcon />,
+            onClick: () => { navigate('/') }
         },
         {
             text: myAuth === 'true' ? 'Shop' : 'Sign In',
-            icon: myAuth === 'true' ? <ShoppingBasketIcon/> : <AssignmentIndIcon/>,
-            onClick: () => {navigate(myAuth === 'true' ? '/shop' : '/auth')}
+            icon: myAuth === 'true' ? <ShoppingBasketIcon /> : <AssignmentIndIcon />,
+            onClick: () => { navigate(myAuth === 'true' ? '/shop' : '/auth') }
         },
         {
             text: myAuth === 'true' ? 'Cart' : '',
-            icon: myAuth === 'true' ? <ShoppingCartIcon/> : '',
-            onClick: myAuth === 'true' ? () => {navigate('/cart')} : () => {}
+            icon: myAuth === 'true' ? <ShoppingCartIcon /> : '',
+            onClick: myAuth === 'true' ? () => { navigate('/cart') } : () => { }
         },
     ]
 
@@ -131,7 +131,7 @@ export const NavBar = () => {
     }
 
     const signInButton = async () => {
-        if (myAuth === 'false'){
+        if (myAuth === 'false') {
             navigate('/auth')
         } else {
             await signOut(auth)
@@ -142,59 +142,59 @@ export const NavBar = () => {
         }
     }
 
-    
+
 
     return (
-        <Box sx={{display: 'flex'}}>
+        <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBar
-                sx={open ? navStyles.appBarShift: navStyles.appBar}
+                sx={open ? navStyles.appBarShift : navStyles.appBar}
                 position='fixed'
             >
                 <Toolbar sx={navStyles.toolbar}>
                     <IconButton
                         color='inherit'
                         aria-label='open drawer'
-                        onClick= {handleDrawerOpen}
-                        edge ='start'
-                        sx = {open ? navStyles.hide : navStyles.menuButton}
+                        onClick={handleDrawerOpen}
+                        edge='start'
+                        sx={open ? navStyles.hide : navStyles.menuButton}
                     >
                         <ShoppingBasketIcon />
                     </IconButton>
                 </Toolbar>
                 <Stack direction="row" justifyContent='space-between' alignItems='center' sx={navStyles.signInStack}>
-                    <Typography variant='body2' sx={{color: 'inherit'}}>
+                    <Typography variant='body2' sx={{ color: 'inherit' }}>
                         {localStorage.getItem('user')}
                     </Typography>
                     <Button
                         variant='outlined'
                         color='info'
                         size='large'
-                        sx={{marginLeft: '20px'}}
-                        onClick = {signInButton}
+                        sx={{ marginLeft: '20px' }}
+                        onClick={signInButton}
                     >
                         {signInText}
                     </Button>
                 </Stack>
             </AppBar>
             <Drawer
-                sx = {open ? navStyles.drawer : navStyles.hide}
-                variant = 'persistent'
-                anchor = 'left'
-                open = {open}
+                sx={open ? navStyles.drawer : navStyles.hide}
+                variant='persistent'
+                anchor='left'
+                open={open}
             >
-                <Box sx = {navStyles.drawerHeader}>
+                <Box sx={navStyles.drawerHeader}>
                     <IconButton onClick={handleDrawerClose}>
-                        <ShoppingBasketIcon/>
+                        <ShoppingBasketIcon />
                     </IconButton>
                 </Box>
-                <Divider/>
+                <Divider />
                 <List>
                     {navLinks.map((item) => {
-                        const {text, icon, onClick} = item
+                        const { text, icon, onClick } = item
                         return (
                             <ListItemButton key={text} onClick={onClick}>
-                                <ListItemText primary={text}/>
+                                <ListItemText primary={text} />
                                 {icon}
                             </ListItemButton>
                         )

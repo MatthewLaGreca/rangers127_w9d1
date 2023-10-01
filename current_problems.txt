@@ -2,29 +2,33 @@ For some reason, in Auth my import
 { useSignInWithGoogle } from 'react-firebase-hooks/auth'
 isn't registering, even though react-firebase-hooks was installed
 
-My shop from flask week isn't hosted on render, so I'm not able to make 
-API calls currently; when trying to build on render, the following error
-occurs: 
 
-ERROR: Could not find a version that satisfies the requirement 
-dnspython==2.4.2 (from -r requirements.txt (line 9)) 
-(from versions: 1.11.0, 1.11.1, 1.12.0, 1.13.0, 1.14.0, 1.15.0, 1.16.0, 
-2.0.0rc1, 2.0.0rc2, 2.0.0, 2.1.0rc1, 2.1.0, 2.2.0rc1, 2.2.0, 2.2.1, 
-2.3.0rc1, 2.3.0)
-Sep 26 08:03:02 PM  ERROR: No matching distribution found for 
-dnspython==2.4.2 (from -r requirements.txt (line 9))
 
-I'm not exactly sure why this is happening if I was grabbing directly
-from my requirements.  Do I just need to change the dnspython requirement
-in requirements.txt to be something that is available to render?
+RESOLVED:
 
-Remember to specify python version in environment variables when
-hosting; not always going to figure out all of the dependencies 
+    My shop from flask week isn't hosted on render, so I'm not able to make 
+    API calls currently; when trying to build on render, the following error
+    occurs: 
 
-Sign In Button doesn't ever change text, and the hidden routes based on
-if the user is authenticated only seems to work 25% of the time, IE:
-the user will not be authenticated as shown by console logging it, but it
-will still take to the shop instead of auth 
+    ERROR: Could not find a version that satisfies the requirement 
+    dnspython==2.4.2 (from -r requirements.txt (line 9)) 
+    (from versions: 1.11.0, 1.11.1, 1.12.0, 1.13.0, 1.14.0, 1.15.0, 1.16.0, 
+    2.0.0rc1, 2.0.0rc2, 2.0.0, 2.1.0rc1, 2.1.0, 2.2.0rc1, 2.2.0, 2.2.1, 
+    2.3.0rc1, 2.3.0)
+    Sep 26 08:03:02 PM  ERROR: No matching distribution found for 
+    dnspython==2.4.2 (from -r requirements.txt (line 9))
+
+    I'm not exactly sure why this is happening if I was grabbing directly
+    from my requirements.  Do I just need to change the dnspython requirement
+    in requirements.txt to be something that is available to render?
+
+    Remember to specify python version in environment variables when
+    hosting; not always going to figure out all of the dependencies 
+
+    Sign In Button doesn't ever change text, and the hidden routes based on
+    if the user is authenticated only seems to work 25% of the time, IE:
+    the user will not be authenticated as shown by console logging it, but it
+    will still take to the shop instead of auth 
 
 Might want to incorporate a landing page API call, so that it sends 
 a GET request hopefully to Render to get it running before we actually 

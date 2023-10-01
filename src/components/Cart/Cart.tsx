@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as _React from 'react'
 import { useState, useEffect } from 'react'
 import {
     Box,
@@ -19,7 +19,7 @@ import { getDatabase, ref, onValue, off, remove, update } from 'firebase/databas
 //internal imports
 import { NavBar } from '../sharedComponents'
 import { theme } from '../../Theme/themes'
-import { ShopState,useGetOrder } from '../../customHooks'
+import { ShopState, useGetOrder } from '../../customHooks'
 import { serverCalls } from '../../api'
 import { shopStyles } from '../Shop'
 
@@ -29,22 +29,22 @@ export interface CreateState {
 }
 
 export const Cart = () => {
-    const { orderData, getData } = useGetOrder()
-    const [ currentCart, setCart ]  = useState<ShopState[]>([])
+    const { orderData } = useGetOrder()
+    const [currentCart, setCart] = useState<ShopState[]>([])
     const db = getDatabase()
     const userId = localStorage.getItem('token')
     const cartRef = ref(db, `carts/${userId}/`)
 
     console.log("This is our order: ", orderData)
 
-    useEffect(() =>{
+    useEffect(() => {
         //we will use the onValue() to listen for changes in our cart
-        onValue(cartRef, (snapshot) =>{
+        onValue(cartRef, (snapshot) => {
             const data = snapshot.val()
             let cartList = []
 
             if (data) {
-                for (let [key,value] of Object.entries(data)){
+                for (let [key, value] of Object.entries(data)) {
                     let cartItem = value as ShopState
                     cartItem['id'] = key
                     cartList.push(cartItem)
@@ -68,16 +68,16 @@ export const Cart = () => {
         }
 
         //this makes API calls to the flask server to create an order
-        const response = await serverCalls.createOrder(data)
+        await serverCalls.createOrder(data)
 
         remove(cartRef)
-        .then(() => {
-            console.log("Cart cleared successfully")
-            window.location.reload()
-        })
-        .catch((error) => {
-            console.log("Error clearing cart: " + error.message)
-        })
+            .then(() => {
+                console.log("Cart cleared successfully")
+                window.location.reload()
+            })
+            .catch((error) => {
+                console.log("Error clearing cart: " + error.message)
+            })
     }
 
     //For updating the cart quantity
@@ -87,7 +87,7 @@ export const Cart = () => {
         const dataIndex = currentCart.findIndex((cart) => cart.id === id)
 
         const updatedData = [...currentCart]
-        if (operation === 'dec'){
+        if (operation === 'dec') {
             updatedData[dataIndex].quantity -= 1
         } else {
             updatedData[dataIndex].quantity += 1
@@ -103,12 +103,12 @@ export const Cart = () => {
         update(itemRef, {
             quantity: cartItem.quantity
         })
-        .then(() => {
-            console.log('Cart updated successfully')
-        })
-        .catch((error) => {
-            console.log("Error updating cart: " + error.message)
-        })
+            .then(() => {
+                console.log('Cart updated successfully')
+            })
+            .catch((error) => {
+                console.log("Error updating cart: " + error.message)
+            })
     }
 
     //Deleting items from the cart
@@ -116,26 +116,26 @@ export const Cart = () => {
         const itemRef = ref(db, `carts/${userId}/${cartItem.id}`)
 
         remove(itemRef)
-        .then(() => {
-            console.log('Successfully Deleted Item')
-        })
-        .catch((error) => {
-            console.log("Error updating cart: " + error.message)
-        })
+            .then(() => {
+                console.log('Successfully Deleted Item')
+            })
+            .catch((error) => {
+                console.log("Error updating cart: " + error.message)
+            })
     }
 
     return (
         <Box sx={shopStyles.main} >
             <NavBar />
-            <Stack direction = 'column' sx={shopStyles.main}>
-                <Stack direction = 'row' sx={{alignItems: 'center', marginTop: '100px', marginLeft: '200px'}}>
+            <Stack direction='column' sx={shopStyles.main}>
+                <Stack direction='row' sx={{ alignItems: 'center', marginTop: '100px', marginLeft: '200px' }}>
                     <Typography
-                        variant = 'h4'
-                        sx = {{marginRight: '20px'}}
+                        variant='h4'
+                        sx={{ marginRight: '20px' }}
                     >
                         Your Cart
                     </Typography>
-                    <Button color = 'primary' variant = 'contained' onClick={ checkout }>Checkout 🪴</Button>
+                    <Button color='primary' variant='contained' onClick={checkout}>Checkout 🪴</Button>
                 </Stack>
                 <Grid container spacing={3} sx={shopStyles.grid}>
                     {currentCart.map((shop: ShopState, index: number) => (
@@ -143,63 +143,69 @@ export const Cart = () => {
                             <Card
                                 sx={shopStyles.card}
                             >
-                            <CardMedia
-                                component='img'
-                                sx={shopStyles.cardMedia}
-                                image={shop.image}
-                                alt={shop.name}
-                            />
-                            <CardContent>
-                                <Stack direction = 'column' justifyContent='space-between' alignItems='center'>
-                                    <Accordion sx={{color: 'white', backgroundColor: theme.palette.secondary.light }}>
-                                        <AccordionSummary
-                                            expandIcon={<InfoIcon sx={{color: theme.palette.primary.main}} />}
-                                            aria-controls="panel1a-content"
-                                            id="panel1a-header"
+                                <CardMedia
+                                    component='img'
+                                    sx={shopStyles.cardMedia}
+                                    image={shop.image}
+                                    alt={shop.name}
+                                />
+                                <CardContent>
+                                    <Stack direction='column' justifyContent='space-between' alignItems='center'>
+                                        <Accordion sx={{ color: 'white', backgroundColor: theme.palette.secondary.light }}>
+                                            <AccordionSummary
+                                                expandIcon={<InfoIcon sx={{ color: theme.palette.primary.main }} />}
+                                                aria-controls="panel1a-content"
+                                                id="panel1a-header"
+                                            >
+                                                <Typography>{shop.name}</Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                                <Typography>{shop.description}</Typography>
+                                            </AccordionDetails>
+                                        </Accordion>
+                                        <Stack direction='row' alignItems='center' justifyContent='space-between' sx={shopStyles.stack2}>
+                                            <Button
+                                                size='large'
+                                                variant='text'
+                                                onClick={() => { updateQuantity(shop.id, 'dec') }}
+                                            >-</Button>
+                                            <Typography variant='h6' sx={{ color: 'white' }}>
+                                                {shop.quantity}
+                                            </Typography>
+                                            <Button
+                                                size='large'
+                                                variant='text'
+                                                onClick={() => { updateQuantity(shop.id, 'inc') }}
+                                            >+</Button>
+                                        </Stack>
+                                        <Button
+                                            size='medium'
+                                            variant='outlined'
+                                            onClick={() => { updateCart(shop) }}
+                                            sx={shopStyles.button}
                                         >
-                                            <Typography>{shop.name}</Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-                                            <Typography>{shop.description}</Typography>
-                                        </AccordionDetails>
-                                    </Accordion>
-                                    <Stack direction ='row' alignItems='center' justifyContent='space-between' sx={shopStyles.stack2}>
+                                            Update Quantity - ${(shop.quantity * parseFloat(shop.price)).toFixed(2)}
+                                        </Button>
                                         <Button
-                                            size='large'
-                                            variant='text'
-                                            onClick={()=>{updateQuantity(shop.id, 'dec')}}
-                                        >-</Button>
-                                        <Typography variant = 'h6' sx={{color: 'white'}}>
-                                            {shop.quantity}
-                                        </Typography>
-                                        <Button
-                                            size='large'
-                                            variant='text'
-                                            onClick={()=>{updateQuantity(shop.id, 'inc')}}
-                                        >+</Button>
+                                            size='medium'
+                                            variant='outlined'
+                                            onClick={() => { deleteItem(shop) }}
+                                            sx={shopStyles.button}
+                                        >
+                                            Delete Item from Cart
+                                        </Button>
                                     </Stack>
-                                    <Button
-                                        size='medium'
-                                        variant='outlined'
-                                        onClick={()=>{updateCart(shop)}}
-                                        sx={shopStyles.button}
-                                    >
-                                        Update Quantity - ${(shop.quantity * parseFloat(shop.price)).toFixed(2)}
-                                    </Button>
-                                    <Button
-                                        size='medium'
-                                        variant='outlined'
-                                        onClick={()=>{deleteItem(shop)}}
-                                        sx={shopStyles.button}
-                                    >
-                                        Delete Item from Cart
-                                    </Button>
-                                </Stack>
-                            </CardContent>
+                                </CardContent>
                             </Card>
                         </Grid>
                     ))}
                 </Grid>
+                <Typography
+                    variant='h4'
+                    sx={{ marginTop: '100px', marginBottom: '100px' }}
+                >
+                    Your Orders
+                </Typography>
             </Stack>
         </Box>
     )

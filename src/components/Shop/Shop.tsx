@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as _React from 'react'
 import { useState } from 'react'
 import {
     Alert,
@@ -28,7 +28,7 @@ import { theme } from '../../Theme/themes'
 import { useGetShop, ShopState } from '../../customHooks'
 import { MessageType } from '../Auth'
 
-interface SubmitState {
+export interface SubmitState {
     quantity: string
 }
 
@@ -51,13 +51,13 @@ export const shopStyles = {
         paddingBottom: '100px'
     },
     grid: {
-        marginTop: '25px', 
-        marginRight: 'auto', 
-        marginLeft: 'auto', 
+        marginTop: '25px',
+        marginRight: 'auto',
+        marginLeft: 'auto',
         width: '70vw'
     },
     card: {
-        width: "300px", 
+        width: "300px",
         padding: '10px',
         display: "flex",
         flexDirection: "column",
@@ -76,28 +76,28 @@ export const shopStyles = {
         borderRadius: '10px'
     },
     button: {
-        color: 'white', 
+        color: 'white',
         borderRadius: '50px',
         height: '45px',
         width: '250px',
         marginTop: '10px'
     },
     stack: {
-        width: '75%', 
-        marginLeft: 'auto', 
+        width: '75%',
+        marginLeft: 'auto',
         marginRight: 'auto'
     },
     stack2: {
-        border: '1px solid', 
-        borderColor: theme.palette.primary.main, 
-        borderRadius: '50px', 
+        border: '1px solid',
+        borderColor: theme.palette.primary.main,
+        borderRadius: '50px',
         width: '100%',
         marginTop: '10px',
         marginLeft: '10px'
     },
-    typography: { 
-        marginLeft: '15vw', 
-        color: "white", 
+    typography: {
+        marginLeft: '15vw',
+        color: "white",
         marginTop: '100px'
     }
 }
@@ -106,12 +106,12 @@ const AddToCart = (cart: CartProps) => {
     //making hooks and instantiating objects
     const db = getDatabase()
     const { register, handleSubmit } = useForm<SubmitState>({})
-    const [ open, setOpen ] = useState(false)
-    const [ message, setMessage ] = useState<string>()
-    const [ messageType, setMessageType] = useState<string>()
+    const [open, setOpen] = useState(false)
+    const [message, setMessage] = useState<string>()
+    const [messageType, setMessageType] = useState<MessageType>()
 
     const onSubmit: SubmitHandler<SubmitState> = async (data, event) => {
-        if (event) event.preventDefault() 
+        if (event) event.preventDefault()
 
         const userId = localStorage.getItem('token')
         const cartRef = ref(db, `carts/${userId}/`)
@@ -119,32 +119,32 @@ const AddToCart = (cart: CartProps) => {
         let myCart = cart.cartItem
 
         //correcting the user if they try to add more than the quantity available
-        if (myCart.quantity > parseInt(data.quantity)){
+        if (myCart.quantity > parseInt(data.quantity)) {
             myCart.quantity = parseInt(data.quantity)
         }
 
         push(cartRef, myCart)
-        .then((newCartRef) => {
-            console.log('Cart item added with key: ' + newCartRef.key)
-            setMessage(`Successfully added item ${myCart.name} to cart`)
-            setMessageType('success')
-            setOpen(true)
-        })
-        .then(()=>{
-            setTimeout(() => {window.location.reload()}, 3000)
-        })
-        .catch((error) =>{
-            console.log('Error adding cart item: ' + error.message)
-            setMessage(error.message)
-            setMessageType('error')
-            setOpen(true)
-        })
+            .then((newCartRef) => {
+                console.log('Cart item added with key: ' + newCartRef.key)
+                setMessage(`Successfully added item ${myCart.name} to cart`)
+                setMessageType('success')
+                setOpen(true)
+            })
+            .then(() => {
+                setTimeout(() => { window.location.reload() }, 3000)
+            })
+            .catch((error) => {
+                console.log('Error adding cart item: ' + error.message)
+                setMessage(error.message)
+                setMessageType('error')
+                setOpen(true)
+            })
 
     }
 
     return (
         <Box>
-            <form onSubmit = {handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <Box>
                     <label htmlFor='quantity'>How much of {cart.cartItem.name} do you want to add?</label>
                     <InputText {...register('quantity')} name='quantity' placeholder='Quantity Here' />
@@ -154,7 +154,7 @@ const AddToCart = (cart: CartProps) => {
             <Snackbar
                 open={open}
                 autoHideDuration={3000}
-                onClose={()=> setOpen(false)}
+                onClose={() => setOpen(false)}
             >
                 <Alert severity={messageType} >
                     {message}
@@ -167,9 +167,9 @@ const AddToCart = (cart: CartProps) => {
 
 
 export const Shop = () => {
-    const { shopData, getData } = useGetShop()
-    const [ currentShop, setCurrentShop ] = useState<ShopState>()
-    const [ cartOpen, setCartOpen] = useState(false)
+    const { shopData } = useGetShop()
+    const [currentShop, setCurrentShop] = useState<ShopState>()
+    const [cartOpen, setCartOpen] = useState(false)
 
     console.log(shopData)
     return (
@@ -192,27 +192,27 @@ export const Shop = () => {
                                 alt={shop.name}
                             />
                             <CardContent>
-                                <Stack direction = 'column' justifyContent='space-between' alignItems='center'>
-                                    <Stack direction = 'row' alignItems='center' justifyContent='space-between'>
+                                <Stack direction='column' justifyContent='space-between' alignItems='center'>
+                                    <Stack direction='row' alignItems='center' justifyContent='space-between'>
                                         <Accordion sx={{ color: 'white', backgroundColor: theme.palette.secondary.light }}>
                                             <AccordionSummary
-                                                expandIcon={<InfoIcon sx={{color: theme.palette.primary.main }} />}
+                                                expandIcon={<InfoIcon sx={{ color: theme.palette.primary.main }} />}
                                                 aria-controls='panel1a-content'
                                                 id='panel1-header'
                                             >
-                                            <Typography>{shop.name}</Typography>
+                                                <Typography>{shop.name}</Typography>
                                             </AccordionSummary>
                                             <AccordionDetails>
                                                 <Typography>
                                                     {shop.description}
                                                 </Typography>
-                                            </AccordionDetails> 
+                                            </AccordionDetails>
                                         </Accordion>
                                     </Stack>
                                     <Button
                                         size='medium'
                                         variant='outlined'
-                                        onClick = {()=>{setCurrentShop(shop); setCartOpen(true)}}
+                                        onClick={() => { setCurrentShop(shop); setCartOpen(true) }}
                                         sx={shopStyles.button}
                                     >
                                         Add to Cart - ${parseFloat(shop.price).toFixed(2)}
@@ -220,13 +220,13 @@ export const Shop = () => {
                                 </Stack>
                             </CardContent>
                         </Card>
-                    </Grid> 
+                    </Grid>
                 ))}
             </Grid>
-            <Dialog open={cartOpen} onClose={()=>{setCartOpen(false)}}>
+            <Dialog open={cartOpen} onClose={() => { setCartOpen(false) }}>
                 <DialogContent>
                     <DialogContentText>Add to Cart</DialogContentText>
-                    <AddToCart cartItem = {currentShop as ShopState } />
+                    <AddToCart cartItem={currentShop as ShopState} />
                 </DialogContent>
             </Dialog>
         </Box>

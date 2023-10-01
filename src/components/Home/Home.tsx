@@ -1,12 +1,12 @@
-import React from "react";
+import _React from "react";
 import { styled } from '@mui/system'
 import { Button } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 import { NavBar } from '../sharedComponents'
 import shop_image from '../../assets/images/car_with_trees.jpg'
-interface Props{
-    title:string
+interface Props {
+    title: string
 }
 
 const Root = styled('div')({
@@ -21,7 +21,7 @@ const Main = styled('div')({
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center top 5px',
-    position: 'absolute', 
+    position: 'absolute',
     marginTop: '10px'
 })
 
@@ -38,11 +38,11 @@ export const Home = (props: Props) => {
 
     return (
         <Root>
-            <NavBar/>
+            <NavBar />
             <Main>
                 <MainText>
                     <h1> {props.title} </h1>
-                    <Button sx={{marginTop: '10px'}} component={Link} to={localStorage.getItem('auth') === 'true' ? '/shop' : '/auth'} variant='contained'>Let's talk Cars!</Button>
+                    <Button sx={{ marginTop: '10px' }} component={Link} to={localStorage.getItem('auth') === 'true' ? '/shop' : '/auth'} variant='contained'>Let's talk Cars!</Button>
                 </MainText>
             </Main>
         </Root>
